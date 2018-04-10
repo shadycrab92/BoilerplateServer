@@ -38,7 +38,7 @@ namespace Boilerplate.Controllers
         }
 
         [HttpGet]
-        public PublicationModel GetById(Int32 id)
+        public PublicationModel GetById(Int32 publicationId)
         {
             return new PublicationModel()
             {
@@ -51,7 +51,27 @@ namespace Boilerplate.Controllers
                 Blocks = ""
             };
         }
-        
+
+        [HttpGet]
+        public IEnumerable<CommentModel> GetComments(Int32 publicationId, Int32 page = 0)
+        {
+            var comments = new List<CommentModel>();
+
+            for (var i = 0; i < (page + 1) * 2; i++)
+            {
+                comments.Add(new CommentModel()
+                {
+                    Id = i,
+                    Created = DateTime.Now,
+                    Updated = null,
+                    UserName = "TestUser",
+                    Text = "В Android 6.0 ввели функцию, позволяющую отформатировать карту памяти так, чтобы она являлась не отдельным хранилищем, а придатком ко внутренней памяти. Это позволяет избежать путаницы с двумя хранилищами данных, особенно при ручной установке некоторых не всегда честно купленных крупных приложений, поставляемых по частям. Однако есть один нюанс: при этом всём нам наглухо блокируют доступ к карте напрямую. Хочешь что-то передать на устройство — используй MTP со всеми вытекающими, вроде скорости передачи файлов, сравнимой с прогулочным шагом контуженной черепахи. Карту теперь не только к ПК через кабель напрямую нельзя подключить: её и из выключенного телефона через кардридер просто так не смонтируешь, ведь она отформатирована в нечто неизвестное ни науке, ни нашим компьютерам."
+                });
+            }
+
+            return comments;
+        }
+
         [HttpPost]
         public PublicationModel Post([FromBody]PublicationModel model)
         {
